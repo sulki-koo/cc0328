@@ -20,7 +20,7 @@ public class LikesService {
     
     // 좋아요한 레시피 조회
     public List<Recipe> getLikedRecipes(String memId) {
-        return likesRepository.findByMemberMemId(memId)
+        return likesRepository.findByMemId(memId)
                 .stream().map(Likes::getRecipe).collect(Collectors.toList());
     }
 

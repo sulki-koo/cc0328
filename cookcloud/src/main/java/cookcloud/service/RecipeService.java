@@ -34,16 +34,16 @@ public class RecipeService {
 	private HashtagRepository hashtagRepository;
 	
 	public List<Recipe> getRecipes() {
-		return recipeRepository.findAll();
+		return recipeRepository.findAllNotDeleted();
 	}
 
 	public Optional<Recipe> getRecipe(Long recipeId) {
-		return recipeRepository.findById(recipeId);
+		return recipeRepository.findByIdAndNotDeleted(recipeId);
 	}
 	
 	// 개인 레시피 목록 조회
     public List<Recipe> getMyRecipes(String memId) {
-    	List<Recipe> recipes = recipeRepository.findByMemberMemId(memId);
+    	List<Recipe> recipes = recipeRepository.findByMemId(memId);
         
         // 각 레시피에 첫 번째 첨부파일 URL을 설정
         for (Recipe recipe : recipes) {
@@ -57,10 +57,10 @@ public class RecipeService {
 	// memNickname을 기준으로 회원의 레시피 목록 조회
 	public List<Recipe> getMemNicknameRecipes(String memNickname) {
 		try {
-			Member member = memberRepository.findAll().stream().filter(m -> m.getMemNickname().equals(memNickname))
+			Member member = memberRepository.findAllNotDeleted().stream().filter(m -> m.getMemNickname().equals(memNickname))
 					.findFirst().orElseThrow(() -> new IllegalAccessException("닉네임 " + memNickname + " 확인불가"));
 
-			List<Recipe> recipes = recipeRepository.findAll().stream()
+			List<Recipe> recipes = recipeRepository.findAllNotDeleted().stream()
 					.filter(recipe -> recipe.getMember().getMemId().equals(member.getMemId()))
 					.collect(Collectors.toList());
 
@@ -98,8 +98,8 @@ public class RecipeService {
 	}
 
 	@Transactional
-    public Recipe updateRecipe(Long id, Recipe newRecipe) {
-        return recipeRepository.findById(id).map(recipe -> {
+    public Recipe updateRecipe(Long recipeId, Recipe newRecipe) {
+        return recipeRepository.findByIdAndNotDeleted(recipeId).map(recipe -> {
             recipe.setRecipeTitle(newRecipe.getRecipeTitle());
             recipe.setRecipeContent(newRecipe.getRecipeContent());
             recipe.setRecipeUpdateAt(LocalDateTime.now());
@@ -108,8 +108,8 @@ public class RecipeService {
     }
 
 	@Transactional
-    public void deleteRecipe(Long id) {
-        recipeRepository.findById(id).ifPresent(recipe -> {
+    public void deleteRecipe(Long recipeId) {
+        recipeRepository.findByIdAndNotDeleted(recipeId).ifPresent(recipe -> {
             recipe.setRecipeIsDeleted("Y"); // isDeleted 값을 "Y"로 설정
             recipe.setRecipeDeleteAt(LocalDateTime.now()); // 삭제 시간 기록
             recipeRepository.save(recipe);

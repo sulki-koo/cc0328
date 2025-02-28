@@ -14,10 +14,10 @@ public class MessageService {
 
 	@Autowired
 	private MessageRepository messageRepository;
-
+	
 	// 메시지 목록 조회
 	public List<Message> getMessages(String memId) {
-		return messageRepository.findByMemberMemId(memId);
+		return messageRepository.findByMemId(memId);
 	}
 
 	// 메시지 읽음 처리

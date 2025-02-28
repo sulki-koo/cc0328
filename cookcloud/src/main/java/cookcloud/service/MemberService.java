@@ -22,11 +22,11 @@ public class MemberService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<Member> getMemberList() {
-		return memberRepository.findAll();
+		return memberRepository.findAllNotDeleted();
 	}
 
 	public Optional<Member> getMember(String memId) {
-		return memberRepository.findById(memId);
+		return memberRepository.findByIdAndNotDeleted(memId);
 	}
 
 	public Optional<Member> findByMemNickname(String memNickname) {

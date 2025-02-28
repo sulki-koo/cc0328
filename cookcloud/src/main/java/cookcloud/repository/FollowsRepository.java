@@ -13,7 +13,7 @@ import cookcloud.entity.FollowsId;
 @Repository
 public interface FollowsRepository extends JpaRepository<Follows, FollowsId> {
 	
-	@Query("SELECT f FROM Follows f WHERE f.followIsFollowing='n' ORDER BY f.followerId DESC")
+	@Query("SELECT f FROM Follows f WHERE f.followIsFollowing ='n' ORDER BY f.followerId DESC")
 	List<Follows> findActiveFollows();
 	
 	@Query("SELECT f FROM Follows f WHERE f.followIsFollowing = 'n' AND f.followerId = :memId ORDER BY f.followerId DESC")

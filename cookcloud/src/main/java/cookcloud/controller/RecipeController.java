@@ -104,17 +104,10 @@ public class RecipeController {
 	}
 
 	@GetMapping("/update/{recipeId}")
-	public String updateRecipeForm(@PathVariable Long recipeId, Model model, Principal principal, HttpServletRequest request) {
-		Member member = memberService.getMember(principal.getName()).get();
-		String memId = member.getMemId();
-		
+	public String updateRecipeForm(@PathVariable Long recipeId, Model model, HttpServletRequest request) {
 		Recipe recipe = recipeService.getRecipe(recipeId).get(); // 레시피 조회
-		
 		String hashtags = recipeService.getHashtagsForRecipe(recipeId); // 레시피에 대한 해시태그 조회
-		if(memId != recipe.getMemId()) {
-			return "recipe/list";
-		}
-
+		
 		model.addAttribute("recipe", recipe);
 		model.addAttribute("recipeTypes", getRecipeTypes(request));
 		model.addAttribute("hashtags", hashtags); // 쉼표로 구분된 해시태그 문자열 전달
@@ -130,9 +123,9 @@ public class RecipeController {
 		return "recipe/view";
 	}
 
-	@PostMapping("/delete/{id}")
-	public String deleteRecipe(@PathVariable Long id) {
-		recipeService.deleteRecipe(id);
+	@PostMapping("/delete/{recipeId}")
+	public String deleteRecipe(@PathVariable Long recipeId) {
+		recipeService.deleteRecipe(recipeId);
 		return "redirect:/recipes/list";
 	}
 

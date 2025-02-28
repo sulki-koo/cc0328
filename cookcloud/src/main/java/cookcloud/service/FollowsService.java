@@ -30,7 +30,6 @@ public class FollowsService {
     }
 
 	public boolean toggleFollow(Long recipeId, String username) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

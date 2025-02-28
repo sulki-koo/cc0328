@@ -18,7 +18,7 @@ public class ReviewService {
 
 	// 내가 작성한 리뷰 조회
     public List<Review> getMyReviews(String memId) {
-        return reviewRepository.findByMemberMemId(memId);
+        return reviewRepository.findByMemId(memId);
     }
 
 	public List<Review> getReviews(Long recipeId) {
