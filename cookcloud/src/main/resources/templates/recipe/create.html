@@ -6,6 +6,7 @@
     <div class="container mt-4">
         <h2>레시피 작성</h2>
         <form action="/recipes/create" method="post" enctype="multipart/form-data">
+        	<input type="hidden" id="memId" name="memId" th:value="${#authentication.principal.username}">
             <div class="mb-3">
                 <label for="recipeTitle" class="form-label">제목</label>
                 <input type="text" class="form-control" id="recipeTitle" name="recipeTitle" required>
@@ -16,11 +17,13 @@
             </div>
             <div class="mb-3">
                 <label for="recipeTypeList" class="form-label">레시피 유형</label>
-                <select id="recipeType" class="form-select">
+                <select id="recipeType" class="form-select" name="recipeCode" required>
                     <option value="">All Types</option>
                     <th:block th:each="entry : ${recipeTypes}">
-                        <option th:value="${entry.key}" th:text="${entry.value.codeName}"></option>
-                    </th:block>
+					    <option th:value="${entry.value.parentCode + '' + entry.value.childCode}" 
+					            th:text="${entry.value.codeName}">
+					    </option>
+					</th:block>
                 </select>
             </div>
             <div class="mb-3">

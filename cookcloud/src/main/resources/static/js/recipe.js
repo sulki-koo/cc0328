@@ -1,19 +1,4 @@
 $(document).ready(function() {
-	// recipeTypes를 서버에서 전달된 데이터로 초기화
-	const recipeTypes = /*[[${recipeTypes}]]*/[];
-
-	// 레시피 유형 select에 옵션 추가
-	recipeTypes.forEach(function(entry) {
-		const option = `<option value="${entry.key}">${entry.value.codeName}</option>`;
-		$('#recipeType').append(option);
-	});
-
-	$('#recipeType').change(function() {
-		let selectedRecipeType = $(this).val();
-		alert("선택한 레시피:", selectedRecipeType);
-	});
-	/*
-
 	// 검색 버튼 클릭 시 해시태그 검색
 	$('#hashtagSearch').click(function() {
 		const hashtag = $('#hashtagSearch').val();
@@ -45,32 +30,7 @@ $(document).ready(function() {
 		}
 		reader.readAsDataURL(this.files[0]);
 	});
-
-	// 레시피들
-	let offset = 0;
-	const limit = 10;
-	let loading = false;
-
-	if (loading) return;
-	loading = true;
-
-	fetch(`/api/recipes?offset=${offset}&limit=${limit}`)
-		.then(response => response.json())
-		.then(data => {
-			if (data.length > 0) {
-				offset += limit;
-			}
-			loading = false;
-		})
-		.catch(error => {
-			loading = false;
-		});
-*/
+	
 });
 
-/*/ 무한 스크롤 이벤트
-window.addEventListener("scroll", () => {
-	if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-	}
-});
-*/
+

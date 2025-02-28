@@ -6,6 +6,7 @@
     <div class="container mt-4">
         <h2>레시피 수정</h2>
         <form action="/recipes/update/{recipeId}" method="post" enctype="multipart/form-data">
+        	<input type="hidden" id="memId" th:value="${#authentication.principal.username}">
             <div class="mb-3">
                 <label for="recipeTitle" class="form-label">제목</label>
                 <input type="text" class="form-control" id="recipeTitle" name="recipeTitle" value="${recipe.recipeTitle}" required>

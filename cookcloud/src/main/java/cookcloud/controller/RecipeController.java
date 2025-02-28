@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import cookcloud.entity.Code;
 import cookcloud.entity.CodeId;
@@ -20,7 +21,6 @@ import cookcloud.entity.Recipe;
 import cookcloud.service.CodeService;
 import cookcloud.service.MemberService;
 import cookcloud.service.RecipeService;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/recipes")
@@ -31,19 +31,13 @@ public class RecipeController {
 
 	@Autowired
 	private MemberService memberService;
-
-	@Autowired
-	private CodeService codeService;
+	
+	private static Map<CodeId, Code> recipeTypes = new CodeService().getRecipeTypes();
 
 	@GetMapping
-	public String getRecipes(Model model, Principal principal, HttpSession session) {
-		if (principal != null) {
-			Member member = memberService.getMember(principal.getName()).get();
-			String memId = member.getMemId();
-		}
-
+	public String getRecipes(Model model) {
 		List<Recipe> recipes = recipeService.getRecipes();
-		Map<CodeId, Code> recipeTypes = codeService.getRecipeTypes();
+		
 		model.addAttribute("recipeTypes", recipeTypes);
 		model.addAttribute("recipes", recipes);
 		return "recipe/list";
@@ -53,6 +47,8 @@ public class RecipeController {
 	public String getRecipe(@PathVariable Long recipeId, Model model) {
 		Recipe recipe = recipeService.getRecipe(recipeId).get();
 		Member member = memberService.getMember(recipe.getMemId()).get();
+		
+		model.addAttribute("recipeTypes", recipeTypes);
 		model.addAttribute("recipe", recipe);
 		model.addAttribute("nickname", member.getMemNickname());
 		return "recipe/view";
@@ -61,6 +57,7 @@ public class RecipeController {
 	@GetMapping("/search/{nickname}")
 	public String getMemberRecipes(@PathVariable String nickname, Model model) {
 		List<Recipe> recipes = recipeService.getMemNicknameRecipes(nickname);
+		
 		model.addAttribute("recipes", recipes);
 		model.addAttribute("nickname", nickname);
 		return "recipe/list";
@@ -69,6 +66,7 @@ public class RecipeController {
 	@GetMapping("/search/{keyword}")
 	public String searchRecipes(@PathVariable String keyword, Model model) {
 		List<Recipe> recipes = recipeService.searchRecipes(keyword);
+		
 		model.addAttribute("recipes", recipes);
 		return "recipe/list";
 	}
@@ -76,20 +74,24 @@ public class RecipeController {
 	// 레시피 유형 가져오기 (동적으로 코드맵에서 가져오기)
 	@GetMapping("/create")
 	public String createRecipeForm(Model model) {
-		Map<CodeId, Code> recipeTypes = codeService.getRecipeTypes();
 		model.addAttribute("recipeTypes", recipeTypes);
 		return "recipe/create";
 	}
 
 	@PostMapping("/create")
-	public String createRecipe(Recipe recipe, Principal principal, HttpSession session) {
-		Member member = memberService.getMember(principal.getName()).get();
-		String memId = member.getMemId();
-		session.setAttribute("memId", memId);
+	public String createRecipe(Recipe recipe, 
+			@RequestParam String memId, 
+            @RequestParam String recipeTitle, 
+            @RequestParam String recipeContent, 
+            @RequestParam String recipeCode) {
 
-		recipe.setRecipeTitle(recipe.getRecipeTitle());
-		recipe.setRecipeContent(recipe.getRecipeContent());
-		recipe.setRecipeCode(recipe.getRecipeCode());
+		System.out.println("sajdfkl;askldjfsfdlk;"+memId + recipeTitle + recipeContent+recipeCode);
+		
+		Long longRecipeCode = Long.parseLong(recipeCode);
+		
+		recipe.setRecipeTitle(recipeTitle);
+		recipe.setRecipeContent(recipeContent);
+		recipe.setRecipeCode(longRecipeCode);
 		recipe.setMemId(memId);
 
 		recipeService.createRecipe(recipe);
@@ -97,13 +99,12 @@ public class RecipeController {
 	}
 
 	@GetMapping("/update/{recipeId}")
-	public String updateRecipeForm(@PathVariable Long recipeId, Model model, Principal principal, HttpSession session) {
+	public String updateRecipeForm(@PathVariable Long recipeId, Model model, Principal principal) {
 		Member member = memberService.getMember(principal.getName()).get();
 		String memId = member.getMemId();
-		session.setAttribute("memId", memId);
 		
 		Recipe recipe = recipeService.getRecipe(recipeId).get(); // 레시피 조회
-		Map<CodeId, Code> recipeTypes = codeService.getRecipeTypes(); // 코드 서비스로부터 레시피 유형들 조회
+		
 		String hashtags = recipeService.getHashtagsForRecipe(recipeId); // 레시피에 대한 해시태그 조회
 		if(memId != recipe.getMemId()) {
 			return "recipe/list";

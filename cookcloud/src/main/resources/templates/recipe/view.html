@@ -6,6 +6,7 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between">
             <h2 th:text="${recipe.recipeTitle}">레시피 제목</h2>
+            
 	        <button class="btn btn-danger" th:onclick="|location.href='/recipes/report/' + ${recipe.recipeId}|">
             	<i class="bi bi-flag"></i> 신고
             </button>
@@ -59,4 +60,5 @@
 		</div>        
     </div>
 </body>
+<script src="/js/reviewList.js"></script>
 </html>
