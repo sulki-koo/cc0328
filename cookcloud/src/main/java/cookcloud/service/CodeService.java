@@ -43,7 +43,6 @@ public class CodeService {
         Map<CodeId, Code> recipeTypes = codeMap.entrySet().stream()
                 .filter(entry -> entry.getKey().getParentCode() == 5L)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));  // 필터링된 코드만 반환
-
         return recipeTypes;
     }
 	

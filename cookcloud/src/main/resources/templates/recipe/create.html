@@ -15,9 +15,9 @@
                 <textarea class="form-control" id="recipeContent" name="recipeContent" rows="4" required></textarea>
             </div>
             <div class="mb-3">
-                <label for="recipeType" class="form-label">레시피 유형</label>
-                <select class="form-select" id="recipeType" name="recipeType">
-                    <option value="">유형 선택</option>
+                <label for="recipeTypeList" class="form-label">레시피 유형</label>
+                <select id="recipeType" class="form-select">
+                    <option value="">All Types</option>
                     <th:block th:each="entry : ${recipeTypes}">
                         <option th:value="${entry.key}" th:text="${entry.value.codeName}"></option>
                     </th:block>

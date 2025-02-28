@@ -25,9 +25,6 @@ public class RecipeService {
 	private RecipeRepository recipeRepository;
 
 	@Autowired
-	private RecipeTypeRepository recipeTypeRepository;
-
-	@Autowired
 	private RecipeTagRepository recipeTagRepository;
 
 	@Autowired
@@ -84,8 +81,8 @@ public class RecipeService {
 	}
 
 	// 레시피 유형으로 검색
-	public List<Recipe> searchByRecipeType(Long recipeTypeCode) {
-		return recipeTypeRepository.findByRecipeTypeCode(recipeTypeCode);
+	public List<Recipe> searchByRecipeType(Long recipeCode) {
+		return recipeRepository.findByRecipeCode(recipeCode);
 	}
 
 	@Transactional

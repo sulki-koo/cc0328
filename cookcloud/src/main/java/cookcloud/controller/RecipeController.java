@@ -39,9 +39,7 @@ public class RecipeController {
 	public String getRecipes(Model model, Principal principal, HttpSession session) {
 		if (principal != null) {
 			Member member = memberService.getMember(principal.getName()).get();
-
 			String memId = member.getMemId();
-			session.setAttribute("memId", memId);
 		}
 
 		List<Recipe> recipes = recipeService.getRecipes();
@@ -91,6 +89,7 @@ public class RecipeController {
 
 		recipe.setRecipeTitle(recipe.getRecipeTitle());
 		recipe.setRecipeContent(recipe.getRecipeContent());
+		recipe.setRecipeCode(recipe.getRecipeCode());
 		recipe.setMemId(memId);
 
 		recipeService.createRecipe(recipe);

@@ -38,8 +38,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 
-
-
 let offset = 0;
 const limit = 10;
 const memId = $("#memId").val();
@@ -90,83 +88,3 @@ window.addEventListener("scroll", () => {
 	}
 });
 
-document.getElementById("updateMember")?.addEventListener("click", function(event) {
-	event.preventDefault();
-	updateMember();
-});
-function updateMember() {
-	let password = $("#password").val();
-	let checkPassword = $("#checkPassword").val();
-
-	if (!password || !checkPassword) {
-		alert("비밀번호를 입력하세요");
-		return;
-	}
-
-	let memberData = {
-		memName: $("#name").val(),
-		memNickname: $("#nickname").val(),
-		memPassword: password,
-		memEmail: $("#email").val(),
-		memPhone: $("#phone").val()
-	}
-
-	if (password == checkPassword) {
-		$.ajax({
-			url: "/mypage/updateMember/" + memId,
-			type: "PUT",
-			contentType: "application/json",
-			data: JSON.stringify(memberData),
-			success: function(response) {
-				alert("회원정보 수정 성공!");
-				location.reload();
-			},
-			error: function(xhr, staus, error) {
-				alert("오류 발생 : " + xhr.responseText);
-			}
-		});
-	} else {
-		alert("비밀번호가 일치하지 않습니다.");
-	}
-}
-
-document.getElementById("deleteMember")?.addEventListener("click", function(event) {
-	event.preventDefault();
-	deleteMember();
-});
-function deleteMember() {
-
-}
-
-// 로그아웃 버튼 클릭 시 logout() 함수 호출
-document.getElementById("logoutLink")?.addEventListener("click", function(event) {
-	event.preventDefault();
-	logout();  // 로그아웃 함수 호출
-});
-function logout() {
-	sessionStorage.clear();  // 로그아웃 시 모든 세션 스토리지 초기화
-	window.location.href = '/logout';
-}
-
-// 메시지 읽음 처리
-function markMessageRead(messageId) {
-	fetch('/mypage/message/' + messageId + '/read', {
-		method: 'POST'
-	}).then(response => {
-		if (response.ok) {
-			alert('메시지 읽음 처리되었습니다.');
-		}
-	});
-}
-
-// 메시지 삭제
-function deleteMessage(messageId) {
-	fetch('/mypage/message/' + messageId, {
-		method: 'DELETE'
-	}).then(response => {
-		if (response.ok) {
-			alert('메시지가 삭제되었습니다.');
-			location.reload();
-		}
-	});
-}

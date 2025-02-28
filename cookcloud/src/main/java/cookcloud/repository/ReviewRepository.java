@@ -8,6 +8,9 @@ import cookcloud.entity.Member;
 import cookcloud.entity.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>{
+	
+	
+	
 
 	List<Review> findByMemberMemId(String memId);
 	

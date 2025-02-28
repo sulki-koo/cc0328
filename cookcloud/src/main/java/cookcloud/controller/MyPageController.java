@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,7 +24,6 @@ import cookcloud.service.MemberService;
 import cookcloud.service.MessageService;
 import cookcloud.service.RecipeService;
 import cookcloud.service.ReviewService;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/mypage")
@@ -50,12 +48,10 @@ public class MyPageController {
 	private MessageService messageService;
 
 	@GetMapping
-	public String viewMyPage(Model model, Principal principal, HttpSession session) {
+	public String viewMyPage(Model model, Principal principal) {
 		
 		Member member = memberService.getMember(principal.getName()).get();
-
 		String memId = member.getMemId();
-		session.setAttribute("memId", memId);
 
 		// 필요한 데이터 조회
 		List<Recipe> myRecipes = recipeService.getMyRecipes(memId);
@@ -75,29 +71,6 @@ public class MyPageController {
 		model.addAttribute("messages", messages);
 
 		return "mypage/main"; // Thymeleaf 템플릿 이름
-	}
-
-	// 메시지 읽음 처리
-	@PostMapping("/message/{id}/read")
-	@ResponseBody
-	public ResponseEntity<Message> markMessageAsRead(@PathVariable Long messageId) {
-		messageService.markMessageAsRead(messageId);
-		return ResponseEntity.ok().build();
-	}
-
-	// 메시지 삭제 처리
-	@PutMapping("/message/{id}")
-	@ResponseBody
-	public ResponseEntity<Message> deleteMessage(@PathVariable Long messageId) {
-		messageService.deleteMessage(messageId);
-		return ResponseEntity.ok().build();
-	}
-
-	@PutMapping("/updateMember/{memId}")
-	@ResponseBody
-	public Member updateMember(@PathVariable String memId, @RequestBody Member member) {
-		member.setMemId(memId);
-		return memberService.updateMember(member);
 	}
 
 }

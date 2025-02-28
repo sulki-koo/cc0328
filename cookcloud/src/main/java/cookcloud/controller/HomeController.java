@@ -9,7 +9,7 @@ public class HomeController {
     // 메인 페이지
     @GetMapping("/")
     public String mainPage() {
-        return "main"; // main.html
+        return "home"; // main.html
     }
 
     // 로그인 페이지

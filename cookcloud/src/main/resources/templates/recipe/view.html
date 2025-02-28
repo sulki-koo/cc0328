@@ -27,8 +27,16 @@
             <button id="followBtn" class="btn" th:classappend="${following} ? 'btn-warning' : 'btn-outline-secondary'" th:data-user-id="${recipe.memId}">
                 <i id="followIcon" class="bi bi-bell"></i> 팔로우
             </button>
+			<button type="button" th:onclick="location.href='/recipes'" class="btn btn-primary">목록</button>
         </div><br>
-
+		
+		<div th:if="${#authorization.expr('isAuthenticated()') and #authentication.principal.username == recipe.memId}">
+            <form id="reviewForm" action="/reviews/create" method="post">
+                <button type="button" th:onclick="location.href='/recipes/update/{recipeId}'" class="btn btn-primary">수정</button>
+                <button type="button" th:onclick="location.href='/recipes/delete/{recipeId}'" class="btn btn-primary">삭제</button>
+            </form>
+        </div>
+		
         <!-- 리뷰 작성 (로그인한 사용자만 가능) -->
         <div th:if="${#authorization.expr('isAuthenticated()')}">
             <h6>리뷰 작성</h6>

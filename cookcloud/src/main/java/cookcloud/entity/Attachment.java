@@ -40,9 +40,6 @@ public class Attachment implements Serializable{
 	@Column(name="ATTACH_SIZE", nullable = false)
 	private Long attachSize;
 
-	@Column(name="ATTACH_ORDER", nullable = false)
-	private Long attachOrder;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ATTACH_INSERT_AT", nullable = false)
 	private LocalDateTime attachInsertAt;

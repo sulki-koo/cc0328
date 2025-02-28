@@ -15,4 +15,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	@Query("SELECT r FROM Recipe r WHERE r.recipeTitle LIKE %:keyword% OR r.memId LIKE %:keyword%")
 	List<Recipe> searchByKeyword(@Param("keyword") String keyword);
 
+	// 레시피 유형 코드로 검색
+	List<Recipe> findByRecipeCode(Long recipeCode);
+
 }

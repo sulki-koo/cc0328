@@ -59,6 +59,9 @@ public class Recipe implements Serializable {
 	
 	@Column(name="RECIPE_IS_DELETED", columnDefinition = "CHAR(1)", nullable = false)
 	private String recipeIsDeleted;
+	
+	@Column(name="RECIPE_CODE", nullable = false)
+	private Long recipeCode;
 
 	@Column(name="RECIPE_BOARD_CODE", nullable = false)
 	private Long recipeBoardCode;
@@ -81,9 +84,6 @@ public class Recipe implements Serializable {
 	
 	@OneToMany(mappedBy = "recipe")
 	private List<Likes> likesList;
-	
-	@OneToMany(mappedBy = "recipe")
-	private List<RecipeType> recipeTypeList;
 	
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeTag> recipeTagList;

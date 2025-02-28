@@ -31,10 +31,6 @@ public class Likes implements Serializable {
 	@Column(name = "LIKE_ID")
 	private Long likeId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "LIKE_AT", nullable = false)
-	private LocalDateTime likeAt;
-
 	@Column(name = "LIKE_IS_LIKED", columnDefinition = "CHAR(1)", nullable = false)
 	private String likeIsLiked;
 

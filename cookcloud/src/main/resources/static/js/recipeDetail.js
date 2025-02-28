@@ -42,7 +42,7 @@ $(document).ready(function() {
 			$("#reviews").prepend(`<p>${response.content} (새 리뷰)</p>`);
 		});
 	});
-
+/*
 	let offset = 0;
 	const limit = 10;
 	let loading = false;
@@ -70,9 +70,10 @@ $(document).ready(function() {
 		page++;
 	});
 */
-	// 무한 스크롤 이벤트
+	/*/ 무한 스크롤 이벤트
 	window.addEventListener("scroll", () => {
 		if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
 		}
 	});
+	*/
 });

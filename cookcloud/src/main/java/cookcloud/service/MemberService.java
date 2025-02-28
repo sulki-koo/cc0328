@@ -1,5 +1,9 @@
 package cookcloud.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,12 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cookcloud.entity.Member;
 import cookcloud.repository.MemberRepository;
-import cookcloud.service.MemberService;
-
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -45,21 +43,21 @@ public class MemberService {
 		memberRepository.save(member);
 	}
 
-	public boolean isDuplicate(String memId, String memNickname) {
+	public boolean isDuplicateId(String memId) {
 		boolean idExists = getMember(memId).isPresent();
+		return idExists;
+	}
+
+	public boolean isDuplicateNickname(String memNickname) {
 		boolean nicknameExists = findByMemNickname(memNickname).isPresent();
-		return idExists || nicknameExists;
+		return nicknameExists;
 	}
 
 	@Transactional
 	public Member updateMember(Member member) {
 		Member findMember = getMember(member.getMemId()).get();
-
 		findMember.setMemName(member.getMemName());
 		findMember.setMemNickname(member.getMemNickname());
-		if (member.getMemPassword() != findMember.getMemPassword()) {
-			findMember.setMemPassword(passwordEncoder.encode(findMember.getMemPassword())); // 암호화된 비밀번호 저장
-		}
 		findMember.setMemEmail(member.getMemEmail());
 		findMember.setMemPhone(member.getMemPhone());
 		return memberRepository.save(findMember);
@@ -68,7 +66,6 @@ public class MemberService {
 	@Transactional
 	public void deleteMember(String memId) {
 		Member findMember = getMember(memId).get();
-		findMember.setMemId(memId);
 		findMember.setMemDeleteAt(LocalDateTime.now()); // 탈퇴일
 		findMember.setMemStatusCode(13L); // 탈퇴 회원
 		memberRepository.save(findMember);
