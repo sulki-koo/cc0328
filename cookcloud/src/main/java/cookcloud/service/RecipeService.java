@@ -2,6 +2,7 @@ package cookcloud.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cookcloud.entity.Code;
+import cookcloud.entity.CodeId;
 import cookcloud.entity.Hashtag;
 import cookcloud.entity.Member;
 import cookcloud.entity.Recipe;
@@ -29,7 +32,7 @@ public class RecipeService {
 
 	@Autowired
 	private HashtagRepository hashtagRepository;
-
+	
 	public List<Recipe> getRecipes() {
 		return recipeRepository.findAll();
 	}

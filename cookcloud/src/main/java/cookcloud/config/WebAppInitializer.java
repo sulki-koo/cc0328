@@ -1,6 +1,5 @@
 package cookcloud.config;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,16 +25,13 @@ public class WebAppInitializer {
         return new ServletContextInitializer() {
             @Override
             public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setInitParameter("myParam", "myValue");
-                
-                List<Code> codes = codeRepository.findAll();
-                Map<CodeId, Code> codeMap = codes.stream().collect(Collectors.toMap(
-        				code ->  new CodeId(code.getParentCode(), code.getChildCode()), 
-        				code -> code
-        				));
-                
+                Map<CodeId, Code> codeMap = codeRepository.findAll().stream().collect(Collectors.toMap(
+        			code ->  new CodeId(code.getParentCode(), code.getChildCode()), 
+        			code -> code
+        		));
                 servletContext.setAttribute("codeMap", codeMap);
             }
         };
     }
+    
 }
